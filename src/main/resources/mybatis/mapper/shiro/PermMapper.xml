@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.wmlz.restdemo.shiro.mapper.PermMapper">
+    <resultMap id="BaseResultMap" type="xyz.wmlz.restdemo.shiro.entity.Perm">
+        <id column="pid" jdbcType="INTEGER" property="pid"/>
+        <result column="pname" jdbcType="VARCHAR" property="pname"/>
+        <result column="ptype" jdbcType="INTEGER" property="ptype"/>
+        <result column="pval" jdbcType="VARCHAR" property="pval"/>
+        <result column="created" jdbcType="TIMESTAMP" property="created"/>
+        <result column="updated" jdbcType="TIMESTAMP" property="updated"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from perm
+        where pid = #{pid,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="xyz.wmlz.restdemo.shiro.entity.Perm">
+        insert into perm (pid, pname, ptype,
+                          pval, created, updated)
+        values (#{pid,jdbcType=INTEGER}, #{pname,jdbcType=VARCHAR}, #{ptype,jdbcType=INTEGER},
+                #{pval,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="xyz.wmlz.restdemo.shiro.entity.Perm">
+        update perm
+        set pname   = #{pname,jdbcType=VARCHAR},
+            ptype   = #{ptype,jdbcType=INTEGER},
+            pval    = #{pval,jdbcType=VARCHAR},
+            created = #{created,jdbcType=TIMESTAMP},
+            updated = #{updated,jdbcType=TIMESTAMP}
+        where pid = #{pid,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select pid, pname, ptype, pval, created, updated
+        from perm
+        where pid = #{pid,jdbcType=INTEGER}
+    </select>
+    <select id="selectByUid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT DISTINCT p.pid, p.pname, p.ptype, p.pval, p.created, p.updated
+        FROM perm p,
+             role_perm rp,
+             user_role ur
+        WHERE p.pid = rp.perm_id
+          AND ur.role_id = rp.role_id
+          AND ur.user_id = #{uid,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select pid, pname, ptype, pval, created, updated
+        from perm
+        order by age desc, username asc
+    </select>
+</mapper>

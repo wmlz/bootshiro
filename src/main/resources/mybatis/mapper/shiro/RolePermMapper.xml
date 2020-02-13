@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.wmlz.restdemo.shiro.mapper.RolePermMapper">
+    <resultMap id="BaseResultMap" type="xyz.wmlz.restdemo.shiro.entity.RolePerm">
+        <id column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <id column="perm_id" jdbcType="INTEGER" property="permId"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="map">
+        delete
+        from role_perm
+        where role_id = #{roleId,jdbcType=INTEGER}
+          and perm_id = #{permId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="xyz.wmlz.restdemo.shiro.entity.RolePerm">
+        insert into role_perm (role_id, perm_id)
+        values (#{roleId,jdbcType=INTEGER}, #{permId,jdbcType=INTEGER})
+    </insert>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select role_id, perm_id
+        from role_perm
+        order by age desc, username asc
+    </select>
+</mapper>
